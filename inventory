@@ -4,5 +4,9 @@
 # called group_vars/<environment>/vars.yml to hold environment specific settings
 
 [non-prod]
+<<<<<<< HEAD
 non-prod ansible_connection=local
 
+=======
+non-prod ansible_connection=local
+>>>>>>> c3a5f6964828ca8aec0d18407c59aea4cad9dc16
