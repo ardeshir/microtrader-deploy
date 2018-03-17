@@ -1,5 +1,4 @@
 # You can specify git tag, commit or branch for the version property
-
 - src: https://github.com/ardeshir/aws-cloudformation.git
   scm: git
   version: master
