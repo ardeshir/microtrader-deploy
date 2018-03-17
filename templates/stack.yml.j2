@@ -30,7 +30,26 @@ Parameters:
 
 Resources:
   ApplicationAutoscalingLaunchConfiguration:
-    Type: AWS::AutoScaling::LaunchConfiguration 
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Metadata:
+      AWS::CloudFormation::Init:
+        config: 
+          commands:
+            10_first_run:
+              command: sh firstrun.sh
+              cwd: /home/ec2-user
+              env:
+                STACK_NAME:
+                  Ref: AWS::StackName
+                AUTOSCALING_GROUP: ApplicationAutoscaling
+                AWS_DEFAULT_REGION:
+                  Ref: AWS::Region
+                ECS_CLUSTER:
+                  Ref: ApplicationCluster
+                PROXY_URL:
+                  Fn::ImportValues:
+                    Fn::Sub: ${VpcName}ProxyUrl
+                DOCKER_NETWORK_MODE: host 
     Properties:
       ImageId:
         Ref: ApplicationImageId 
@@ -86,7 +105,33 @@ Resources:
           Value:
             Ref: ApplicationCluster
           PropagateAtLaunch: "true"
-
+  ApplicationAutoscalingSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription:
+        Fn::Sub: ${AWS::StackName} Application Autoscaling Security GroupDescription
+      VpcId:
+        Fn::ImportValue: 
+           Fn::Sub: ${VpcName}VpcId 
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp:
+            Fn::ImportValue:
+              Fn:Sub: ${VpcName}VpcCidr 
+      SecurityGroupEgress:
+        - IpProtocol: udp
+          FromPort: 53
+          ToPort: 53
+          CidrIp:
+            Fn::Join: ["", [ "Fn::ImportValue" : { "Fn::Sub": "${VpcName}VpcDnsServer" }, "/32" ]]
+        - IpProtocol: tcp
+          FromPort: 3128
+          ToPort: 3128
+          DestinationSecurityGroupId:
+            Fn::ImportValue: 
+              Fn::Sub: ${VpcName}ProxySecurityGroup 
 
 
 
