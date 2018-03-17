@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # AWS CloudFormation Starter Playbook
 
 ## Introduction
@@ -140,4 +139,3 @@ No known issues.
 
 - [CloudFormation User Guide](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
 - [CloudFormation Template Reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
->>>>>>> c3a5f6964828ca8aec0d18407c59aea4cad9dc16
