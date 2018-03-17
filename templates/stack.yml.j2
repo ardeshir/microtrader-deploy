@@ -119,7 +119,27 @@ Resources:
       IpProtocol: tcp
       FromPort: 5701
       ToPort: 5710
+      DestinationSecurityGroupId: 
+        Ref: ApplicationAutoscalingSecurityGroup
+      GroupId:
+        Ref: ApplicationAutoscalingSecurityGroup
+  MicrotraderEventBusIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 15701
+      ToPort: 15704
       SourceSecurityGroupId: 
+        Ref: ApplicationAutoscalingSecurityGroup
+      GroupId:
+        Ref: ApplicationAutoscalingSecurityGroup
+  MicrotraderEventBusEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 15701
+      ToPort: 15704
+      DestinationSecurityGroupId: 
         Ref: ApplicationAutoscalingSecurityGroup
       GroupId:
         Ref: ApplicationAutoscalingSecurityGroup
@@ -151,15 +171,3 @@ Resources:
             Fn::ImportValue: 
               Fn::Sub: ${VpcName}ProxySecurityGroup 
 
-
-
-
-  #StarterBucket{{ Stack.Inputs.MyStackInput }}:
-    #Type: "AWS::S3::Bucket"
-    #Properties:
-      #BucketName:
-        #Fn::Sub: ${AWS::AccountId}-starter-bucket-${MyStackInput}
-      #Tags:
-        #- Key: Name
-          #Value: 
-            #Fn::Sub: ${AWS::AccountId}-starter-bucket-${MyStackInput}
