@@ -26,8 +26,6 @@ Parameters:
     Description: Name of the target VPC 
     Default: Default
 
-    
-
 Resources:
   ApplicationAutoscalingLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -105,6 +103,26 @@ Resources:
           Value:
             Ref: ApplicationCluster
           PropagateAtLaunch: "true"
+  MicrotraderClusterDiscoverIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 5701
+      ToPort: 5710
+      SourceSecurityGroupId: 
+        Ref: ApplicationAutoscalingSecurityGroup
+      GroupId:
+        Ref: ApplicationAutoscalingSecurityGroup
+  MicrotraderClusterDiscoverEgress:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
+      IpProtocol: tcp
+      FromPort: 5701
+      ToPort: 5710
+      SourceSecurityGroupId: 
+        Ref: ApplicationAutoscalingSecurityGroup
+      GroupId:
+        Ref: ApplicationAutoscalingSecurityGroup
   ApplicationAutoscalingSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
