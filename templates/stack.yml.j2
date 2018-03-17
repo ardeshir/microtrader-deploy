@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: AWS CloudFormation 
+Description: AWS ECS CloudFormation 
 
 Parameters:
   ApplicationDesiredCount:
@@ -27,6 +27,21 @@ Parameters:
     Default: Default
 
 Resources:
+  PublicLoadBalancer:
+    Type: AWS::ElasticLoadBalancerV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      Subnets:
+        - Fn::ImportValue:
+            Fn::Sub: ${VpcName}PublicSubnetA
+        - Fn::ImportValue:
+            Fn::Sub: ${VpcName}PublicSubnetB
+      LoadBalancerAttributes:
+        - Key: deletion_protection.enabled
+          Value: "false"
+        - key: idle_timeout.timeout.seconds
+          Value: 30 
+  PrivateLoadBalancer:
   ApplicationAutoscalingInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
