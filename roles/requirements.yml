@@ -1,17 +1,10 @@
 # You can specify git tag, commit or branch for the version property
-<<<<<<< HEAD
+
 - src: https://github.com/ardeshir/aws-cloudformation.git
   scm: git
   version: master
   name: aws-cloudformation
 - src: https://github.com/ardeshir/aws-sts.git
-=======
-- src: https://github.com/docker-production-aws/aws-cloudformation.git
-  scm: git
-  version: master
-  name: aws-cloudformation
-- src: https://github.com/docker-production-aws/aws-sts.git
->>>>>>> c3a5f6964828ca8aec0d18407c59aea4cad9dc16
   scm: git
   version: master
   name: aws-sts
