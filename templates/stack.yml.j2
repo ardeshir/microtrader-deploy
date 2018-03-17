@@ -44,6 +44,39 @@ Resources:
                 - ec2.amazonaws.com
             Action:
               - sts:AssumeRole 
+      Policies: 
+        - PolicyName: ECSContainerInstancePolicy
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - Effect: Allow
+                Action:
+                  - ecs:RegisterContainerInstance
+                  - ecs:DeregisterContainerInstance
+                Resource: 
+                  Fn::Sub: arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:cluster/${ApplicationCluster} 
+              - Effect: Allow 
+                Action: 
+                  - ecs:DiscoverPollEndpoint
+                  - ecs:Submit*
+                  - ecs:Poll
+                  - ecs:StartTelemetrySession 
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - ecs:BatchCheckLayerAvailability
+                  - ecs:BatchGetImage
+                  - ecs:GetDownloadUrlForLayer
+                  - ecs:GetAuthorizationToken
+                Resource: "*" 
+        - PolicyName: HazelcastClusterDiscoveryPolicy
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement:  
+              Action: ec2:DescribeInstances
+              Resource: "*"
+              Effect: Allow 
+            
   ApplicationAutoscalingLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
     Metadata:
